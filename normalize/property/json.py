@@ -47,13 +47,15 @@ class LazySafeJsonProperty(JsonProperty, LazySafeProperty):
     pass
 
 
-class JsonCollectionProperty(ListProperty, JsonProperty):
+class JsonListProperty(ListProperty, JsonProperty):
     pass
 
 
-class JsonCollection(ListCollection):
+JsonCollectionProperty = JsonListProperty
+
+
+class SafeJsonListProperty(JsonCollectionProperty, SafeProperty):
     pass
 
 
-class SafeJsonCollectionProperty(JsonCollectionProperty, SafeProperty):
-    pass
+SafeJsonCollectionProperty = SafeJsonListProperty
