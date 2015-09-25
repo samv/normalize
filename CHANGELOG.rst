@@ -1,6 +1,56 @@
 Normalize changelog and errata
 ==============================
 
+1.0.0 25th September 2015
+-------------------------
+As a hint to the stability of the code, I've decided to call this
+release 1.0.
+
+But with a major version comes a major new feature.  The 0.x approach
+was one of type safety and strictness.  The 1.0 approach will be one
+of convenience and added pythonicity, layered on top of an inner
+strictness.  To ensure complete backwards compatibility, in general
+you must import versions of module exports ending in 'V1' to get the
+new behavior.
+
+The details will be documented in the manual, tests and tutorial, but
+in a nutshell, the new features are:
+
+* unset attributes return ``None`` instead of ``AttributeError`` (and
+  do not define an 'empty' accessor) if marked as "V1"; or you can
+  override the type of ``None`` returned with ``v1_none=''``
+
+* there's a new base class called ``AutoJsonRecord`` which allows you
+  to access attributes of the input JSON, previously accessed via
+  ``.unknown_json_keys['attribute']``, by regular attribute access.
+  This feature is recursive.
+
+* the combination of these two features, ``AutoJsonRecordV1``, returns
+  ``None`` when those attributes don't exist, instead of
+  ``AttributeError``.
+
+It's recommended that where possible you rename your imports to trim
+the "V1" instead of changing the definitions everywhere:
+
+::
+
+   from normalize import RecordV1 as Record
+   from normalize import AutoJsonRecordV1 as AutoJsonRecord
+   from normalize import AutoJsonProperty as AutoJsonProperty
+
+There are also some minor backwards incompatibilities:
+
+* setting ``default=None`` on a property will select a V1 property
+  (this makes the class instance dictionary lighter, for classes which
+  specify a lot of default None properties)
+
+* ``normalize.property.types.DateTimeProperty`` now ships with default
+  JSON IO functions which use ``datetime.datetime.strptime`` and
+  ``datetime.datetime.isoformat()`` to convert to and from a string.
+  This is an improvement, but technically an API change you might need
+  to consider if you were expecting it to fail.
+
+
 0.10.0 21st August 2015
 -----------------------
 * Exceptions raised while marshalling JSON are now wrapped by a new
