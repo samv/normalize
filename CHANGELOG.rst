@@ -50,6 +50,8 @@ There are also some minor backwards incompatibilities:
   This is an improvement, but technically an API change you might need
   to consider if you were expecting it to fail.
 
+* The ``empty`` property parameter has been removed completely.
+
 
 0.10.0 21st August 2015
 -----------------------
